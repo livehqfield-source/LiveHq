@@ -112,5 +112,5 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-edit]');if
 $('exportCsv').onclick=()=>{const cols=['id','customer','order','category','priority','status','courier','tracking','follow','summary'];const csv=[cols.join(','),...cases.map(c=>cols.map(k=>'"'+String(c[k]??'').replace(/"/g,'""')+'"').join(','))].join('\r\n');const a=document.createElement('a'),u=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.href=u;a.download='orderpilot-demo-cases.csv';a.click();URL.revokeObjectURL(u)};
 render();
 </script></body></html>`;
-  return new Response(html, { status: 200, headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store' } });
+  return new Response(html, { status: 200, headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store', 'content-security-policy': "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; font-src 'none'; form-action 'none'; base-uri 'none'; frame-ancestors 'none'" } });
 }
