@@ -445,6 +445,19 @@ ok((await env.KV.get('prog:claude', 'json')).tasks.some((t) => t.text === 'Admin
 r = await call('GET', '/admin/emails');
 ok(r.text.includes('id="sched_chatgpt"') && r.text.includes('ChatGPT Scheduled task prompt') && !r.text.includes('id="sched_claude"') && ['chatgpt', 'claude', 'grok', 'copilot'].every((ai) => r.text.includes(`data-copy="instr_${ai}"`)), 'Emails: custom instructions for all + ChatGPT scheduled prompt');
 
+// ---- OrderPilot standalone workspace ----
+r = await call('GET', '/orderpilot', { noCookie: true });
+{
+  const csp = r.headers.get('content-security-policy') || '';
+  ok(r.status === 200 && r.text.includes('OrderPilot') && r.text.includes('Customer cases') && r.text.includes('DEMO DATA ONLY'), 'OrderPilot route renders standalone demo workspace');
+  ok(csp.includes("script-src 'unsafe-inline'") && csp.includes("connect-src 'none'") && csp.includes("frame-ancestors 'none'") && !csp.includes('https://'), 'OrderPilot CSP permits its inline UI only, with no network access');
+  ok(r.headers.get('cache-control') === 'no-store', 'OrderPilot demo is not cached');
+}
+r = await call('POST', '/orderpilot', { noCookie: true });
+ok(r.status === 405, 'OrderPilot rejects non-read requests');
+r = await call('GET', '/admin', { noCookie: true });
+ok(r.status === 200 && r.text.includes('Admin password'), 'OrderPilot route does not replace existing admin');
+
 // ---- Hosted apps ----
 const APP_HTML = '<!DOCTYPE html><html><head><title>t</title></head><body><h1>Invoice demo</h1><script>document.title="x"</script></body></html>';
 r = await call('GET', '/apps/live-hq-invoice-maker', { noCookie: true });
