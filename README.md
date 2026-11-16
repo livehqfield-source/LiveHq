@@ -20,3 +20,9 @@ Box copies: `.secrets/admin_password.txt`, `.secrets/session_secret.txt`, `.secr
 
 ## Google
 Redirect URI: `https://ai-mail-hub.livehqfield.workers.dev/oauth/google/callback`. Scopes: gmail.modify and gmail.send, with offline access and prompt=consent. The callback checks that the signed-in account is livehqfield@gmail.com.
+
+## OrderPilot (separate application)
+- `/orderpilot`: standalone post-order operations workspace; does not replace `/admin`.
+- Initial release is a demo UI with fictional in-memory records only. Do not enter real customer information.
+- The prototype route has a restrictive CSP: no outbound network connections, forms, external fonts or frames.
+- Before live retailer use, implement authenticated retailer accounts, tenant-scoped persistent storage, audit trails, privacy/retention controls, integration authorization and approval-gated customer communications. See `docs/ORDERPILOT.md`.

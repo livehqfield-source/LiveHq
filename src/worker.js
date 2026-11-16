@@ -5,6 +5,7 @@ import { handleAiWeb } from './aiweb.js';
 import { handleAdmin, handleOAuthCallback } from './admin.js';
 import { page, COPY_JS } from './html.js';
 import { serveApp } from './apps.js';
+import { handleOrderPilot } from './orderpilot.js';
 export const PUBLIC_HOST = 'live-hq.pages.dev';
 
 function secure(resp, isHtml) {
@@ -36,6 +37,7 @@ async function route(req, env, url) {
     return new Response(page('Live HQ', `<div class="card"><p>Private email hub for ${ACCOUNT}. Nothing to see here.</p><p><a href="/admin">Admin sign in</a></p></div>`), { headers: { 'content-type': 'text/html; charset=utf-8' } });
   }
   if (path === '/health') return json({ ok: true });
+  if (path === '/orderpilot' || path === '/orderpilot/') return handleOrderPilot(req);
   if (path === '/openapi.json') return json(openapi(url.origin), 200, { 'access-control-allow-origin': '*' });
   if (path === '/robots.txt') return new Response('User-agent: *\nDisallow: /\n', { headers: { 'content-type': 'text/plain' } });
 
