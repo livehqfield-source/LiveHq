@@ -1,0 +1,22 @@
+# Secrets and credentials — never commit
+.secrets/
+.env
+.env.*
+.dev.vars
+.wrangler/
+
+# Node
+node_modules/
+
+# Deploy payloads written by scripts/make-deploy.mjs (also under .secrets/)
+deploy_payload.js
+**/deploy_payload.js
+
+# Text files that may hold keys or passwords
+*password*.txt
+*secret*.txt
+*keys*.txt
+ai_keys.txt
+enc_key.txt
+session_secret.txt
+admin_password.txt
